@@ -1,0 +1,23 @@
+name: 24/7 Free Live Stream Bypass
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Install FFmpeg
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+    - name: Start 24/7 Live Stream Loop
+      run: |
+        while true; do
+          ffmpeg -re -loop 1 -i image_2976a481.jpg -rtsp_transport tcp -i "https://soundhelix.com" -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k -g 50 -c:a aac -b:a 128k -ar 44100 -f flv "rtmp://://youtube.com{{ secrets.YOUTUBE_KEY }}"
+        done
